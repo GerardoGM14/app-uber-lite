@@ -1,0 +1,109 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                   String    @id @default(uuid())
+  email                String    @unique
+  password_hash        String
+  name                 String
+  role                 String    // 'passenger', 'driver', 'admin'
+  phone                String?
+  rating_avg           Decimal   @default(0.00)
+  rating_count         Int       @default(0)
+  is_active            Boolean   @default(true)
+  current_location_lat Decimal?
+  current_location_lng Decimal?
+  created_at           DateTime  @default(now())
+  updated_at           DateTime  @updatedAt
+
+  trips_as_passenger Trip[]   @relation("PassengerTrips")
+  trips_as_driver    Trip[]   @relation("DriverTrips")
+  offers             Offer[]
+  ratings_given      Rating[] @relation("Rater")
+  ratings_received   Rating[] @relation("Rated")
+  messages           ChatMessage[]
+
+  @@map("users")
+}
+
+model Trip {
+  id              String    @id @default(uuid())
+  passenger_id    String
+  driver_id       String?
+  pickup_lat      Decimal
+  pickup_lng      Decimal
+  pickup_address  String
+  dropoff_lat     Decimal
+  dropoff_lng     Decimal
+  dropoff_address String
+  proposed_price  Decimal
+  final_price     Decimal?
+  status          String    // 'CREATED', 'PUBLISHED', 'ASSIGNED', 'IN_PROGRESS', 'COMPLETED', 'CANCELLED'
+  has_pets        Boolean   @default(false)
+  more_than_four  Boolean   @default(false)
+  notes           String?
+  type            String    @default("trip") // 'trip', 'delivery'
+  created_at      DateTime  @default(now())
+  updated_at      DateTime  @updatedAt
+
+  passenger       User      @relation("PassengerTrips", fields: [passenger_id], references: [id])
+  driver          User?     @relation("DriverTrips", fields: [driver_id], references: [id])
+  offers          Offer[]
+  ratings         Rating[]
+  messages        ChatMessage[]
+
+  @@map("trips")
+}
+
+model Offer {
+  id               String    @id @default(uuid())
+  trip_id          String
+  driver_id        String
+  price            Decimal
+  estimated_time   Int?      // in minutes
+  is_counter_offer Boolean   @default(false)
+  is_accepted      Boolean   @default(false)
+  created_at       DateTime  @default(now())
+
+  trip             Trip      @relation(fields: [trip_id], references: [id])
+  driver           User      @relation(fields: [driver_id], references: [id])
+
+  @@unique([trip_id, driver_id])
+  @@map("offers")
+}
+
+model Rating {
+  id        String   @id @default(uuid())
+  trip_id   String
+  rater_id  String
+  rated_id  String
+  rating    Int
+  comment   String?
+  created_at DateTime @default(now())
+
+  trip      Trip     @relation(fields: [trip_id], references: [id])
+  rater     User     @relation("Rater", fields: [rater_id], references: [id])
+  rated     User     @relation("Rated", fields: [rated_id], references: [id])
+
+  @@unique([trip_id, rater_id])
+  @@map("ratings")
+}
+
+model ChatMessage {
+  id        String   @id @default(uuid())
+  trip_id   String
+  sender_id String
+  message   String
+  created_at DateTime @default(now())
+
+  trip      Trip     @relation(fields: [trip_id], references: [id])
+  sender    User     @relation(fields: [sender_id], references: [id])
+
+  @@map("chat_messages")
+}
