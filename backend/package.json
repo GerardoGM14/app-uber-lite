@@ -1,0 +1,37 @@
+{
+  "name": "app-uber-lite-backend",
+  "version": "1.0.0",
+  "main": "src/index.ts",
+  "scripts": {
+    "dev": "nodemon",
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "prisma:generate": "prisma generate",
+    "prisma:migrate": "prisma migrate dev",
+    "seed": "tsx prisma/seed.ts"
+  },
+  "dependencies": {
+    "@prisma/client": "6.2.1",
+    "@types/leaflet-routing-machine": "^3.2.9",
+    "bcrypt": "^6.0.0",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.1",
+    "express": "^4.21.2",
+    "jsonwebtoken": "^9.0.3",
+    "leaflet-routing-machine": "^3.2.12",
+    "pg": "^8.11.3",
+    "zod": "^4.3.6"
+  },
+  "devDependencies": {
+    "@types/bcrypt": "^6.0.0",
+    "@types/cors": "^2.8.19",
+    "@types/express": "^4.17.21",
+    "@types/jsonwebtoken": "^9.0.10",
+    "@types/node": "^22.15.30",
+    "nodemon": "^3.1.10",
+    "prisma": "6.2.1",
+    "ts-node": "^10.9.2",
+    "tsx": "^4.20.3",
+    "typescript": "~5.8.3"
+  }
+}

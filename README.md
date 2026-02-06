@@ -1,57 +1,31 @@
-# React + TypeScript + Vite
+# UrbanGo (InDrive Clone MVP)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Este proyecto es un sistema de movilidad tipo inDrive construido con Clean Architecture.
 
-Currently, two official plugins are available:
+## Estructura del Proyecto
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+El proyecto está dividido estrictamente en dos partes:
 
-## Expanding the ESLint configuration
+- **frontend/**: Aplicación React + Vite + TailwindCSS.
+- **backend/**: API REST con Node.js + Express + TypeScript + Prisma.
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## Cómo Iniciar
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+### Backend
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+1.  Entra a la carpeta backend: `cd backend`
+2.  Instala dependencias: `npm install`
+3.  Configura variables de entorno en `.env`.
+4.  Ejecuta migraciones: `npm run prisma:migrate`
+5.  Inicia el servidor: `npm run dev`
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+### Frontend
 
-export default tseslint.config({
-  extends: [
-    // other configs...
-    // Enable lint rules for React
-    reactX.configs['recommended-typescript'],
-    // Enable lint rules for React DOM
-    reactDom.configs.recommended,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+1.  Entra a la carpeta frontend: `cd frontend`
+2.  Instala dependencias: `npm install`
+3.  Inicia el servidor de desarrollo: `npm run dev`
+
+## Arquitectura
+
+- **Backend**: Sigue Clean Architecture (Domain, Application, Infrastructure, Interface).
+- **Frontend**: Componentes modulares y estado gestionado con Zustand.
